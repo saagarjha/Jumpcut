@@ -138,7 +138,9 @@
 	} else if ( [[NSUserDefaults standardUserDefaults] integerForKey:@"menuIcon"] == 2 ) {
 		[statusItem setTitle:[NSString stringWithFormat:@"%C",0x2702]]; 
 	} else {
-		[statusItem setImage:[NSImage imageNamed:@"net.sf.jumpcut.scissors_bw16.png"]];
+        NSImage *image = [NSImage imageNamed:@"net.sf.jumpcut.scissors_bw16.png"];
+        [image setTemplate:YES];
+		[statusItem setImage: image];
     }
 	[statusItem setMenu:jcMenu];
     [statusItem setEnabled:YES];

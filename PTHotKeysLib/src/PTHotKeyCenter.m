@@ -253,7 +253,9 @@ static id _sharedHotKeyCenter = nil;
 
 //	NSAssert( hotKeyID.signature == 'PTHk', @"Invalid hot key id" );
 //	NSAssert( hotKeyID.id != nil, @"Invalid hot key id" );
-
+    if (hotKeyID.signature != 'PTHk' || hotKeyID.id == 0) {
+        return eventNotHandledErr;
+    }
 	hotKey = (PTHotKey*)hotKeyID.id;
 
 	switch( GetEventKind( event ) )
@@ -267,7 +269,8 @@ static id _sharedHotKeyCenter = nil;
 		break;
 
 		default:
-			NSAssert( 0, @"Unknown event kind" );
+//			NSAssert( 0, @"Unknown event kind" );
+            return eventNotHandledErr;
 		break;
 	}
 	
