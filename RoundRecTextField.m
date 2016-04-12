@@ -39,7 +39,7 @@
 
 - (void)drawRect:(NSRect)rect {
     // Oh, the hackishness.
-    NSBezierPath *roundedRec = [NSBezierPath bezierPathWithRoundRectInRect:rect radius:8];
+    NSBezierPath *roundedRec = [NSBezierPath bezierPathWithRoundRectInRect:rect radius:4];
     [[self backgroundColor] set];
     [roundedRec fill];
     [self setDrawsBackground:NO];

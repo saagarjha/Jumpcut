@@ -14,13 +14,13 @@
 
 
 @interface BezelWindow : NSWindow {
-	NSString			*charString; // Slightly misleading, as this can be longer than one character
+	NSString			*stackString;
 	NSString			*title;
 	NSString			*bezelText;
-	NSImage				*icon;
+//	NSImage				*icon;
 	RoundRecTextField	*textField;
-	RoundRecTextField	*charField;
-	NSImageView			*iconView;
+	RoundRecTextField	*stackField;
+//	NSImageView			*iconView;
 	id					delegate;
 }
 
@@ -31,7 +31,7 @@
 - (void)setTitle:(NSString *)newTitle;
 - (NSString *)text;
 - (void)setText:(NSString *)newText;
-- (void)setCharString:(NSString *)newChar;
+- (void)setStackString:(NSString *)newChar;
 - (void)setAlpha:(float)newValue;
 
 - (id)delegate;

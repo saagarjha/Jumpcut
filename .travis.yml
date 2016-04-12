@@ -1,0 +1,7 @@
+language: objective-c
+osx_image: xcode7.3
+
+before_install:
+  - brew update
+  - brew uninstall xctool && brew install --HEAD xctool
+script: xctool -project Jumpcut.xcodeproj -scheme Jumpcut build -sdk macosx10.11

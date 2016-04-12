@@ -372,28 +372,28 @@
             case NSHomeFunctionKey:
 				if ( [clippingStore jcListCount] > 0 ) {
 					stackPosition = 0;
-					[bezel setCharString:[NSString stringWithFormat:@"%d", stackPosition + 1]];
+					[bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
 					[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 				}
 				break;
             case NSEndFunctionKey:
 				if ( [clippingStore jcListCount] > 0 ) {
 					stackPosition = [clippingStore jcListCount] - 1;
-					[bezel setCharString:[NSString stringWithFormat:@"%d", stackPosition + 1]];
+                    [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
 					[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 				}
 				break;
             case NSPageUpFunctionKey:
 				if ( [clippingStore jcListCount] > 0 ) {
 					stackPosition = stackPosition - 10; if ( stackPosition < 0 ) stackPosition = 0;
-					[bezel setCharString:[NSString stringWithFormat:@"%d", stackPosition + 1]];
+                    [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
 					[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 				}
 				break;
 			case NSPageDownFunctionKey:
 				if ( [clippingStore jcListCount] > 0 ) {
 					stackPosition = stackPosition + 10; if ( stackPosition >= [clippingStore jcListCount] ) stackPosition = [clippingStore jcListCount] - 1;
-					[bezel setCharString:[NSString stringWithFormat:@"%d", stackPosition + 1]];
+                    [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
 					[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 				}
 				break;
@@ -407,7 +407,7 @@
 				newStackPosition = pressed == 0x30 ? 9 : [[NSString stringWithCharacters:&pressed length:1] intValue] - 1;
 				if ( [clippingStore jcListCount] >= newStackPosition ) {
 					stackPosition = newStackPosition;
-					[bezel setCharString:[NSString stringWithFormat:@"%d", stackPosition + 1]];
+                    [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
 					[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 				}
 				break;
@@ -428,7 +428,7 @@
 - (void) showBezel
 {
 	if ( [clippingStore jcListCount] > 0 && [clippingStore jcListCount] > stackPosition ) {
-		[bezel setCharString:[NSString stringWithFormat:@"%d", stackPosition + 1]];
+        [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
 		[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 	} 
 	if ([bezel respondsToSelector:@selector(setCollectionBehavior:)])
@@ -439,7 +439,7 @@
 - (void) hideBezel
 {
 	[bezel orderOut:nil];
-	[bezel setCharString:@""];
+	[bezel setStackString:@""];
 	isBezelDisplayed = NO;
 }
 
@@ -619,12 +619,12 @@
 {
 	stackPosition++;
 	if ( [clippingStore jcListCount] > stackPosition ) {
-		[bezel setCharString:[NSString stringWithFormat:@"%d", stackPosition + 1]];
+        [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
 		[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 	} else {
 		if ( [[NSUserDefaults standardUserDefaults] boolForKey:@"wraparoundBezel"] ) {
 			stackPosition = 0;
-			[bezel setCharString:[NSString stringWithFormat:@"%d", 1]];
+            [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
 			[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 		} else {
 			stackPosition--;
@@ -638,14 +638,14 @@
 	if ( stackPosition < 0 ) {
 		if ( [[NSUserDefaults standardUserDefaults] boolForKey:@"wraparoundBezel"] ) {
 			stackPosition = [clippingStore jcListCount] - 1;
-			[bezel setCharString:[NSString stringWithFormat:@"%d", stackPosition + 1]];
+            [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
 			[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 		} else {
 			stackPosition = 0;
 		}
 	}
 	if ( [clippingStore jcListCount] > stackPosition ) {
-		[bezel setCharString:[NSString stringWithFormat:@"%d", stackPosition + 1]];
+        [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
 		[bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
 	}
 }
