@@ -6,34 +6,33 @@
 //  Copyright (c) 2003 Quentin D. Carnicelli. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
+#import <Cocoa/Cocoa.h>
 
 @interface PTKeyCombo : NSObject <NSCopying>
 {
-	int	mKeyCode;
-	int	mModifiers;
+	NSInteger	mKeyCode;
+	NSUInteger	mModifiers;
 }
 
 + (id)clearKeyCombo;
-+ (id)keyComboWithKeyCode: (int)keyCode modifiers: (int)modifiers;
-- (id)initWithKeyCode: (int)keyCode modifiers: (int)modifiers;
++ (id)keyComboWithKeyCode: (NSInteger)keyCode modifiers: (NSUInteger)modifiers;
+- (id)initWithKeyCode: (NSInteger)keyCode modifiers: (NSUInteger)modifiers;
 
 - (id)initWithPlistRepresentation: (id)plist;
 - (id)plistRepresentation;
 
 - (BOOL)isEqual: (PTKeyCombo*)combo;
 
-- (int)keyCode;
-- (int)modifiers;
+- (NSInteger)keyCode;
+- (NSUInteger)modifiers;
 
 - (BOOL)isClearCombo;
 - (BOOL)isValidHotKeyCombo;
 
 @end
 
+
 @interface PTKeyCombo (UserDisplayAdditions)
-
-- (NSString*)description;
-
+- (NSString*)keyCodeString;
+- (NSUInteger)modifierMask;
 @end

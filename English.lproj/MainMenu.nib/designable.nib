@@ -53,8 +53,7 @@
         </customObject>
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="218" userLabel="PrefsPanel" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="542" y="303" width="549" height="471"/>
+            <rect key="contentRect" x="420" y="242" width="549" height="471"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="219">
                 <rect key="frame" x="0.0" y="0.0" width="549" height="471"/>
@@ -259,7 +258,7 @@
                             </tabViewItem>
                             <tabViewItem label="Hotkeys" identifier="net.sf.jumpcut.preferences.hotkey.tiff" id="346">
                                 <view key="view" id="347">
-                                    <rect key="frame" x="10" y="7" width="529" height="433"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="549" height="471"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box title="Box" boxType="oldStyle" borderType="none" titlePosition="noTitle" id="348">
