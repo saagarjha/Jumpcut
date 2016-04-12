@@ -13,6 +13,6 @@
 
 @interface NSBezierPath (RoundRecBezierPath)
 
-+(NSBezierPath*)bezierPathWithRoundRectInRect:(NSRect)aRect radius:(float)radius;
++ (NSBezierPath *)bezierPathWithRoundRectInRect:(NSRect)aRect radius:(float)radius;
 
 @end

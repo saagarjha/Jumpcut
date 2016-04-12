@@ -14,22 +14,22 @@
 #import "LoginItemsAE.h"
 
 /*
-	This class is a wrapper around Apple's LoginItemsAE sample code.
-	
-	allLoginItems returns an array of dictionaries containing the URL of the
-	login item under key UKLoginItemURL and the launch hidden status under
-	UKLoginItemHidden.
-	
-	All methods that return a BOOL generally return YES on success and NO on
-	failure.
-*/
+        This class is a wrapper around Apple's LoginItemsAE sample code.
+
+        allLoginItems returns an array of dictionaries containing the URL of the
+        login item under key UKLoginItemURL and the launch hidden status under
+        UKLoginItemHidden.
+
+        All methods that return a BOOL generally return YES on success and NO on
+        failure.
+ */
 
 // -----------------------------------------------------------------------------
 //	Constants:
 // -----------------------------------------------------------------------------
 
-#define UKLoginItemURL		((NSString*)kLIAEURL)
-#define UKLoginItemHidden	((NSString*)kLIAEHidden)
+#define UKLoginItemURL    ((NSString *)kLIAEURL)
+#define UKLoginItemHidden ((NSString *)kLIAEHidden)
 
 
 // -----------------------------------------------------------------------------
@@ -38,18 +38,17 @@
 
 @interface UKLoginItemRegistry : NSObject
 {
-
 }
 
-+(NSArray*)	allLoginItems;
-+(BOOL)		removeLoginItemAtIndex: (int)idx;
++ (NSArray *)allLoginItems;
++ (BOOL)removeLoginItemAtIndex:(int)idx;
 
-+(BOOL)		addLoginItemWithURL: (NSURL*)url hideIt: (BOOL)hide;
-+(int)		indexForLoginItemWithURL: (NSURL*)url;		// Use this to detect whether you've already been set, if needed.
-+(BOOL)		removeLoginItemWithURL: (NSURL*)url;
++ (BOOL)addLoginItemWithURL:(NSURL *)url hideIt:(BOOL)hide;
++ (int)indexForLoginItemWithURL:(NSURL *)url;                   // Use this to detect whether you've already been set, if needed.
++ (BOOL)removeLoginItemWithURL:(NSURL *)url;
 
-+(BOOL)		addLoginItemWithPath: (NSString*)path hideIt: (BOOL)hide;
-+(int)		indexForLoginItemWithPath: (NSString*)path;	// Use this to detect whether you've already been set, if needed.
-+(BOOL)		removeLoginItemWithPath: (NSString*)path;
++ (BOOL)addLoginItemWithPath:(NSString *)path hideIt:(BOOL)hide;
++ (int)indexForLoginItemWithPath:(NSString *)path;              // Use this to detect whether you've already been set, if needed.
++ (BOOL)removeLoginItemWithPath:(NSString *)path;
 
 @end

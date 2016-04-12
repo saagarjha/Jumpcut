@@ -14,14 +14,14 @@
 
 
 @interface BezelWindow : NSWindow {
-	NSString			*stackString;
-	NSString			*title;
-	NSString			*bezelText;
-//	NSImage				*icon;
-	RoundRecTextField	*textField;
-	RoundRecTextField	*stackField;
-//	NSImageView			*iconView;
-	id					delegate;
+    NSString *stackString;
+    NSString *title;
+    NSString *bezelText;
+    //	NSImage				*icon;
+    RoundRecTextField *textField;
+    RoundRecTextField *stackField;
+    //	NSImageView			*iconView;
+    id delegate;
 }
 
 - (NSColor *)roundedBackgroundWithRect:(NSRect)bgRect withRadius:(float)radius withAlpha:(float)alpha;

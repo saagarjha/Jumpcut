@@ -14,6 +14,13 @@
 @interface RoundRecTextField : NSTextField {
     IBOutlet RoundRecTextField *characterBackground;
     IBOutlet RoundRecTextField *textBackground;
+    CGFloat _cornerRadius;
+    NSArray *_corners;
 }
+
+@property (nonatomic) CGFloat cornerRadius;
+@property (nonatomic, copy) NSArray *corners;
+
+//- (void)setCornerRadius:(CGFloat)cornerRadius andCorners:(NSArray *)corners;
 
 @end

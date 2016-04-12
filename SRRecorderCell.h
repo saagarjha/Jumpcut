@@ -14,17 +14,17 @@
 #import <Cocoa/Cocoa.h>
 #import "SRCommon.h"
 
-#define SRMinWidth 50
-#define SRMaxHeight 22
+#define SRMinWidth           50
+#define SRMaxHeight          22
 
-#define SRTransitionFPS 30.0
+#define SRTransitionFPS      30.0
 #define SRTransitionDuration 0.35
 //#define SRTransitionDuration 2.35
-#define SRTransitionFrames (SRTransitionFPS*SRTransitionDuration)
-#define SRAnimationAxisIsY YES
+#define SRTransitionFrames   (SRTransitionFPS * SRTransitionDuration)
+#define SRAnimationAxisIsY   YES
 #define ShortcutRecorderNewStyleDrawing
 
-#define SRAnimationOffsetRect(X,Y)	(SRAnimationAxisIsY ? NSOffsetRect(X,0.0,-NSHeight(Y)) : NSOffsetRect(X,NSWidth(Y),0.0))
+#define SRAnimationOffsetRect(X, Y) (SRAnimationAxisIsY ? NSOffsetRect(X, 0.0, -NSHeight(Y)) : NSOffsetRect(X, NSWidth(Y), 0.0))
 
 @class SRRecorderControl, CTGradient, SRValidator;
 
@@ -32,47 +32,47 @@ enum SRRecorderStyle {
     SRGradientBorderStyle = 0,
     SRGreyStyle = 1
 };
-typedef enum SRRecorderStyle SRRecorderStyle;
+typedef enum SRRecorderStyle   SRRecorderStyle;
 
 @interface SRRecorderCell : NSActionCell <NSCoding>
-{	
-	CTGradient          *recordingGradient;
-	NSString            *autosaveName;
-	
-	BOOL                isRecording;
-	BOOL                mouseInsideTrackingArea;
-	BOOL                mouseDown;
-	
-	SRRecorderStyle		style;
-	
-	BOOL				isAnimating;
-	double				transitionProgress;
-	BOOL				isAnimatingNow;
-	BOOL				isAnimatingTowardsRecording;
-	BOOL				comboJustChanged;
-	
-	NSTrackingRectTag   removeTrackingRectTag;
-	NSTrackingRectTag   snapbackTrackingRectTag;
-	
-	KeyCombo            keyCombo;
-	BOOL				hasKeyChars;
-	NSString		    *keyChars;
-	NSString		    *keyCharsIgnoringModifiers;
-	
-	unsigned int        allowedFlags;
-	unsigned int        requiredFlags;
-	unsigned int        recordingFlags;
-	
-	BOOL				allowsKeyOnly;
-	BOOL				escapeKeysRecord;
-	
-	NSSet               *cancelCharacterSet;
-	
-    SRValidator         *validator;
-    
-	IBOutlet id         delegate;
-	BOOL				globalHotKeys;
-	void				*hotKeyModeToken;
+{
+    CTGradient *recordingGradient;
+    NSString *autosaveName;
+
+    BOOL isRecording;
+    BOOL mouseInsideTrackingArea;
+    BOOL mouseDown;
+
+    SRRecorderStyle style;
+
+    BOOL isAnimating;
+    double transitionProgress;
+    BOOL isAnimatingNow;
+    BOOL isAnimatingTowardsRecording;
+    BOOL comboJustChanged;
+
+    NSTrackingRectTag removeTrackingRectTag;
+    NSTrackingRectTag snapbackTrackingRectTag;
+
+    KeyCombo keyCombo;
+    BOOL hasKeyChars;
+    NSString *keyChars;
+    NSString *keyCharsIgnoringModifiers;
+
+    unsigned int allowedFlags;
+    unsigned int requiredFlags;
+    unsigned int recordingFlags;
+
+    BOOL allowsKeyOnly;
+    BOOL escapeKeysRecord;
+
+    NSSet *cancelCharacterSet;
+
+    SRValidator *validator;
+
+    IBOutlet id delegate;
+    BOOL globalHotKeys;
+    void *hotKeyModeToken;
 }
 
 - (void)resetTrackingRects;

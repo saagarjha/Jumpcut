@@ -16,7 +16,7 @@
 
 @interface SRRecorderControl : NSControl
 {
-	IBOutlet id delegate;
+    IBOutlet id delegate;
 }
 
 #pragma mark *** Aesthetics ***

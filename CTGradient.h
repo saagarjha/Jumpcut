@@ -9,29 +9,27 @@
 
 #import <Cocoa/Cocoa.h>
 
-typedef struct _CTGradientElement 
-	{
-	float red, green, blue, alpha;
-	float position;
-	
-	struct _CTGradientElement *nextElement;
-	} CTGradientElement;
+typedef struct _CTGradientElement {
+    float red, green, blue, alpha;
+    float position;
 
-typedef enum  _CTBlendingMode
-	{
-	CTLinearBlendingMode,
-	CTChromaticBlendingMode,
-	CTInverseChromaticBlendingMode
-	} CTGradientBlendingMode;
+    struct _CTGradientElement *nextElement;
+} CTGradientElement;
+
+typedef enum  _CTBlendingMode {
+    CTLinearBlendingMode,
+    CTChromaticBlendingMode,
+    CTInverseChromaticBlendingMode
+} CTGradientBlendingMode;
 
 
 @interface CTGradient : NSObject <NSCopying, NSCoding>
-	{
-	CTGradientElement* elementList;
-	CTGradientBlendingMode blendingMode;
-	
-	CGFunctionRef gradientFunction;
-	}
+{
+    CTGradientElement *elementList;
+    CTGradientBlendingMode blendingMode;
+
+    CGFunctionRef gradientFunction;
+}
 
 + (id)gradientWithBeginningColor:(NSColor *)begin endingColor:(NSColor *)end;
 
@@ -52,7 +50,7 @@ typedef enum  _CTBlendingMode
 
 - (CTGradient *)gradientWithAlphaComponent:(float)alpha;
 
-- (CTGradient *)addColorStop:(NSColor *)color atPosition:(float)position;	//positions given relative to [0,1]
+- (CTGradient *)addColorStop:(NSColor *)color atPosition:(float)position;       //positions given relative to [0,1]
 - (CTGradient *)removeColorStopAtIndex:(unsigned)index;
 - (CTGradient *)removeColorStopAtPosition:(float)position;
 
@@ -62,8 +60,8 @@ typedef enum  _CTBlendingMode
 
 
 - (void)drawSwatchInRect:(NSRect)rect;
-- (void)fillRect:(NSRect)rect angle:(float)angle;					//fills rect with axial gradient
-																	//	angle in degrees
-- (void)radialFillRect:(NSRect)rect;								//fills rect with radial gradient
-																	//  gradient from center outwards
+- (void)fillRect:(NSRect)rect angle:(float)angle;                                       //fills rect with axial gradient
+//	angle in degrees
+- (void)radialFillRect:(NSRect)rect;                                                    //fills rect with radial gradient
+//  gradient from center outwards
 @end
