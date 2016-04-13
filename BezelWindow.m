@@ -21,11 +21,11 @@
                             styleMask:NSBorderlessWindowMask
                               backing:NSBackingStoreBuffered
                                 defer:NO];
-
+    
     if (self) {
         NSNumber *yes = [NSNumber numberWithBool:YES];
         NSNumber *no = [NSNumber numberWithBool:NO];
-
+        
         [self setOpaque:NO];
         [self setAlphaValue:1.0];
         [self setOpaque:NO];
@@ -35,29 +35,27 @@
          setBackgroundColor:
          [self
           sizedBezelBackgroundWithRadius:16.0
-                               withAlpha:[[NSUserDefaults
-                                           standardUserDefaults]
+          withAlpha:[[NSUserDefaults
+                      standardUserDefaults]
                      floatForKey:@"bezelAlpha"]]];
         float lineHeight = 16;
         NSRect textFrame =
-            NSMakeRect(12, [self frame].size.height - 9.75 * lineHeight - 12,
-                       [self frame].size.width - 24, 8 * lineHeight);
+        NSMakeRect(12, [self frame].size.height - 9.75 * lineHeight - 12,
+                   [self frame].size.width - 24, 8 * lineHeight);
         textField = [[RoundRecTextField alloc] initWithFrame:textFrame];
         [[self contentView] addSubview:textField];
         [textField setCornerRadius:4.0];
         [textField setCorners:@[yes, yes, no, yes]]; // Bottom and top left corners are rounded
         [textField setEditable:NO];
         [textField setTextColor:[NSColor whiteColor]];
-        [textField
-         setBackgroundColor:[NSColor colorWithCalibratedWhite:0.1
-                                                        alpha:.45]];
+        [textField setBackgroundColor:[NSColor colorWithCalibratedWhite:0.1 alpha:.45]];
         [textField setDrawsBackground:YES];
         [textField setBordered:NO];
         //		[textField setAlignment:NSCenterTextAlignment];
         NSRect charFrame =
-            NSMakeRect([self frame].size.width - 3 * lineHeight - 12,
-                       [self frame].size.height - 1.75 * lineHeight - 12,
-                       3 * lineHeight, 1.5 * lineHeight);
+        NSMakeRect([self frame].size.width - 3 * lineHeight - 12,
+                   [self frame].size.height - 1.75 * lineHeight - 12,
+                   3 * lineHeight, 1.5 * lineHeight);
         stackField = [[RoundRecTextField alloc] initWithFrame:charFrame];
         [[self contentView] addSubview:stackField];
         [stackField setCornerRadius:4.0];
@@ -72,8 +70,17 @@
         [stackField setAlignment:NSCenterTextAlignment];
         [stackField setFont:[NSFont systemFontOfSize:lineHeight * 1.25]];
         [self setInitialFirstResponder:textField];
-        NSRect jumpcutFrame = NSMakeRect(12, [self frame].size.height - 3 * lineHeight - 12,
-                                         10 * lineHeight, 3 * lineHeight);
+        NSRect jumpcutFrame;
+        icon = [NSImage imageNamed:@"net.sf.jumpcut.ghost_scissors_small.png"];
+        if ([icon isValid]) {
+            NSRect iconFrame = NSMakeRect(12, [self frame].size.height - 1.5 * lineHeight - 12, 1.5 * lineHeight, 1.5 * lineHeight);
+            iconView = [[NSImageView alloc] initWithFrame:iconFrame];
+            [iconView setImage:icon];
+            [[self contentView] addSubview:iconView];
+            jumpcutFrame = NSMakeRect(12 + 1.5 * lineHeight, [self frame].size.height - 2 * lineHeight - 12, 10 * lineHeight, 2 * lineHeight);
+        } else {
+            jumpcutFrame = NSMakeRect(12, [self frame].size.height - 2 * lineHeight - 12, 10 * lineHeight, 2 * lineHeight);
+        }
         RoundRecTextField *jumpcutLabel = [[[RoundRecTextField alloc] initWithFrame:jumpcutFrame] autorelease];
         [[self contentView] addSubview:jumpcutLabel];
         [jumpcutLabel setEditable:NO];
@@ -82,22 +89,10 @@
         [jumpcutLabel setBordered:NO];
         [jumpcutLabel setFont:[NSFont boldSystemFontOfSize:lineHeight * 1.5]];
         [jumpcutLabel setStringValue:@"Jumpcut"];
-        //		icon = [NSImage
-        // imageNamed:@"net.sf.jumpcut.ghost_scissors_small.png"];
-        //		if ( [icon isValid] ) {
-        //			NSRect iconFrame = NSMakeRect( ([self frame].size.width
-        //-
-        //[icon
-        // size].width) / 2, [self frame].size.height - [icon size].height - 24,
-        //[icon size].width, [icon size].height);
-        //			iconView = [[NSImageView alloc]
-        // initWithFrame:iconFrame];
-        //			[iconView setImage:icon];
-        //			[[self contentView] addSubview:iconView];
-        //		}
+
         return self;
     }
-
+    
     return nil;
 }
 
@@ -107,7 +102,7 @@
      [self sizedBezelBackgroundWithRadius:25.0
                                 withAlpha:[[NSUserDefaults
                                             standardUserDefaults]
-                 floatForKey:@"bezelAlpha"]]];
+                                           floatForKey:@"bezelAlpha"]]];
     [[self contentView] setNeedsDisplay:YES];
 }
 
@@ -149,12 +144,12 @@
                             withRadius:(float)radius
                              withAlpha:(float)alpha {
     NSImage *bg = [[NSImage alloc] initWithSize:bgRect.size];
-
+    
     [bg lockFocus];
     // I'm not at all clear why this seems to work
     NSRect dummyRect = NSMakeRect(0, 0, [bg size].width, [bg size].height);
     NSBezierPath *roundedRec =
-        [NSBezierPath bezierPathWithRoundRectInRect:dummyRect radius:radius];
+    [NSBezierPath bezierPathWithRoundRectInRect:dummyRect radius:radius corners:@[]];
     [[NSColor colorWithCalibratedWhite:0.1 alpha:alpha] set];
     [roundedRec fill];
     [bg unlockFocus];
@@ -185,7 +180,7 @@
                        withObject:theEvent];
         return YES;
     }
-
+    
     return NO;
 }
 

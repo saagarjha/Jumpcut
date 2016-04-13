@@ -107,7 +107,7 @@ enum {
 
 // Localization macros, for use in any bundle
 #define SRLoc(key)                      SRLocalizedString(key, nil)
-#define SRLocalizedString(key, comment) NSLocalizedStringFromTableInBundle(key, @ "ShortcutRecorder", [NSBundle bundleForClass : [SRDummyClass class]], comment)
+#define SRLocalizedString(key, comment) NSLocalizedStringFromTableInBundle(key, @"ShortcutRecorder", [NSBundle bundleForClass:[SRDummyClass class]], comment)
 
 // Image macros, for use in any bundle
 //#define SRImage(name) [[[NSImage alloc] initWithContentsOfFile: [[NSBundle bundleForClass: [self class]] pathForImageResource: name]] autorelease]
@@ -118,7 +118,7 @@ enum {
 
 // Macros for glyps
 #define SRInt(x)                        [NSNumber numberWithInt : x]
-#define SRChar(x)                       [NSString stringWithFormat : @ "%C", x]
+#define SRChar(x)                       [NSString stringWithFormat : @"%C", x]
 
 // Some default values
 #define ShortcutRecorderEmptyFlags   0
@@ -167,7 +167,7 @@ double SRAnimationEaseInOut(double t);
 
 FOUNDATION_STATIC_INLINE KeyCombo SRMakeKeyCombo(signed short code, unsigned int flags) {
     KeyCombo kc;
-
+    
     kc.code = code;
     kc.flags = flags;
     return kc;
@@ -192,9 +192,9 @@ FOUNDATION_STATIC_INLINE BOOL SRIsSpecialKey(signed short keyCode) {
 @end
 
 @interface NSError (SRAdditions)
-- (NSString *)localizedFailureReason;
-- (NSString *)localizedRecoverySuggestion;
-- (NSArray *)localizedRecoveryOptions;
+- (NSString *)    localizedFailureReason;
+- (NSString *)    localizedRecoverySuggestion;
+- (NSArray *)     localizedRecoveryOptions;
 @end
 
 @interface NSAlert (SRAdditions)

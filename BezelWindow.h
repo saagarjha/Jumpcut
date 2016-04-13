@@ -17,10 +17,10 @@
     NSString *stackString;
     NSString *title;
     NSString *bezelText;
-    //	NSImage				*icon;
+    NSImage *icon;
     RoundRecTextField *textField;
     RoundRecTextField *stackField;
-    //	NSImageView			*iconView;
+    NSImageView *iconView;
     id delegate;
 }
 
@@ -34,7 +34,7 @@
 - (void)setStackString:(NSString *)newChar;
 - (void)setAlpha:(float)newValue;
 
-- (id)delegate;
+- (id)        delegate;
 - (void)setDelegate:(id)newDelegate;
 
 @end

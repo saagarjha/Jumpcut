@@ -45,51 +45,10 @@
     NSBezierPath *path;
 
     if (!self.cornerRadius || !self.corners) {
-        path = [NSBezierPath bezierPathWithRoundRectInRect:rect radius:4];
+        path = [NSBezierPath bezierPathWithRoundRectInRect:rect radius:4 corners: @[]];
     } else {
-        if ([self.corners count] < 4) {
-            NSNumber *no = [NSNumber numberWithBool:NO];
-            self.corners = [self.corners arrayByAddingObject:@[no, no, no, no]];
+        path = [NSBezierPath bezierPathWithRoundRectInRect:rect radius: self.cornerRadius corners: self.corners];
         }
-
-        NSRect frame = rect;
-        path = [NSBezierPath bezierPath];
-        [path moveToPoint:NSMakePoint(0, self.cornerRadius)];
-
-        [path lineToPoint:NSMakePoint(0, frame.size.height - self.cornerRadius)];
-
-        if ([[self.corners objectAtIndex:0] boolValue]) {
-            [path appendBezierPathWithArcWithCenter:NSMakePoint(self.cornerRadius, frame.size.height - self.cornerRadius) radius:self.cornerRadius startAngle:180 endAngle:90 clockwise:TRUE];
-        } else {
-            [path lineToPoint:NSMakePoint(0, frame.size.height)];
-        }
-
-        [path lineToPoint:NSMakePoint(frame.size.width - self.cornerRadius, frame.size.height)];
-
-        if ([[self.corners objectAtIndex:1] boolValue]) {
-            [path appendBezierPathWithArcWithCenter:NSMakePoint(frame.size.width - self.cornerRadius, frame.size.height - self.cornerRadius) radius:self.cornerRadius startAngle:90 endAngle:0 clockwise:TRUE];
-        } else {
-            [path lineToPoint:NSMakePoint(frame.size.width, frame.size.height)];
-        }
-
-        [path lineToPoint:NSMakePoint(frame.size.width, self.cornerRadius)];
-
-        if ([[self.corners objectAtIndex:2] boolValue]) {
-            [path appendBezierPathWithArcWithCenter:NSMakePoint(frame.size.width - self.cornerRadius, self.cornerRadius) radius:self.cornerRadius startAngle:0 endAngle:270 clockwise:TRUE];
-        } else {
-            [path lineToPoint:NSMakePoint(frame.size.width, 0)];
-        }
-
-        [path lineToPoint:NSMakePoint(self.cornerRadius, 0)];
-
-        if ([[self.corners objectAtIndex:3] boolValue]) {
-            [path appendBezierPathWithArcWithCenter:NSMakePoint(self.cornerRadius, self.cornerRadius) radius:self.cornerRadius startAngle:270 endAngle:180 clockwise:TRUE];
-        } else {
-            [path lineToPoint:NSMakePoint(0, 0)];
-        }
-
-        [path closePath];
-    }
 
     [[self backgroundColor] set];
     [path fill];
