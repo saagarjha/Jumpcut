@@ -18,7 +18,7 @@
                   backing:(NSBackingStoreType)bufferingType
                     defer:(BOOL)flag {
     self = [super initWithContentRect:contentRect
-                            styleMask:NSBorderlessWindowMask
+                            styleMask:NSWindowStyleMaskBorderless
                               backing:NSBackingStoreBuffered
                                 defer:NO];
     
@@ -67,7 +67,7 @@
                                                         alpha:.45]];
         [stackField setDrawsBackground:YES];
         [stackField setBordered:NO];
-        [stackField setAlignment:NSCenterTextAlignment];
+        [stackField setAlignment:NSTextAlignmentCenter];
         [stackField setFont:[NSFont systemFontOfSize:lineHeight * 1.25]];
         [self setInitialFirstResponder:textField];
         NSRect jumpcutFrame;
@@ -125,6 +125,8 @@
     [stackString release];
     stackString = newStack;
     [stackField setStringValue:stackString];
+	float lineHeight = 16;
+	stackField.frame = NSMakeRect([self frame].size.width - stackString.length * lineHeight - 12, [self frame].size.height - 1.75 * lineHeight - 12, stackString.length * lineHeight, 1.5 * lineHeight);
 }
 
 - (void)setText:(NSString *)newText {
@@ -192,10 +194,10 @@
 }
 
 - (void)flagsChanged:(NSEvent *)theEvent {
-    if (!([theEvent modifierFlags] & NSCommandKeyMask) &&
-        !([theEvent modifierFlags] & NSAlternateKeyMask) &&
-        !([theEvent modifierFlags] & NSControlKeyMask) &&
-        !([theEvent modifierFlags] & NSShiftKeyMask) && [self delegate]) {
+    if (!([theEvent modifierFlags] & NSEventModifierFlagCommand) &&
+        !([theEvent modifierFlags] & NSEventModifierFlagOption) &&
+        !([theEvent modifierFlags] & NSEventModifierFlagControl) &&
+        !([theEvent modifierFlags] & NSEventModifierFlagShift) && [self delegate]) {
         [delegate performSelector:@selector(metaKeysReleased)];
     }
 }

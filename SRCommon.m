@@ -67,10 +67,10 @@ NSString * SRStringForCarbonModifierFlagsAndKeyCode(unsigned int flags, signed s
 //----------------------------------------------------------
 NSString * SRStringForCocoaModifierFlags(unsigned int flags) {
     NSString *modifierFlagsString = [NSString stringWithFormat:@"%@%@%@%@",
-                                     (flags & NSControlKeyMask ? [NSString stringWithFormat : @"%C", (unichar)KeyboardControlGlyph] : @""),
-                                     (flags & NSAlternateKeyMask ? [NSString stringWithFormat : @"%C", (unichar)KeyboardOptionGlyph] : @""),
-                                     (flags & NSShiftKeyMask ? [NSString stringWithFormat : @"%C", (unichar)KeyboardShiftGlyph] : @""),
-                                     (flags & NSCommandKeyMask ? [NSString stringWithFormat : @"%C", (unichar)KeyboardCommandGlyph] : @"")];
+                                     (flags & NSEventModifierFlagControl ? [NSString stringWithFormat : @"%C", (unichar)KeyboardControlGlyph] : @""),
+                                     (flags & NSEventModifierFlagOption ? [NSString stringWithFormat : @"%C", (unichar)KeyboardOptionGlyph] : @""),
+                                     (flags & NSEventModifierFlagShift ? [NSString stringWithFormat : @"%C", (unichar)KeyboardShiftGlyph] : @""),
+                                     (flags & NSEventModifierFlagCommand ? [NSString stringWithFormat : @"%C", (unichar)KeyboardCommandGlyph] : @"")];
     
     return modifierFlagsString;
 }
@@ -103,10 +103,10 @@ NSString * SRReadableStringForCarbonModifierFlagsAndKeyCode(unsigned int flags, 
 //----------------------------------------------------------
 NSString * SRReadableStringForCocoaModifierFlagsAndKeyCode(unsigned int flags, signed short keyCode) {
     NSString *readableString = [NSString stringWithFormat:@"%@%@%@%@%@",
-                                (flags & NSCommandKeyMask ? SRLoc(@"Command + ") : @""),
-                                (flags & NSAlternateKeyMask ? SRLoc(@"Option + ") : @""),
-                                (flags & NSControlKeyMask ? SRLoc(@"Control + ") : @""),
-                                (flags & NSShiftKeyMask ? SRLoc(@"Shift + ") : @""),
+                                (flags & NSEventModifierFlagCommand ? SRLoc(@"Command + ") : @""),
+                                (flags & NSEventModifierFlagOption ? SRLoc(@"Option + ") : @""),
+                                (flags & NSEventModifierFlagControl ? SRLoc(@"Control + ") : @""),
+                                (flags & NSEventModifierFlagShift ? SRLoc(@"Shift + ") : @""),
                                 SRStringForKeyCode(keyCode)];
     
     return readableString;
@@ -118,15 +118,15 @@ NSString * SRReadableStringForCocoaModifierFlagsAndKeyCode(unsigned int flags, s
 unsigned int SRCarbonToCocoaFlags(unsigned int carbonFlags) {
     unsigned int cocoaFlags = ShortcutRecorderEmptyFlags;
     
-    if (carbonFlags & cmdKey) cocoaFlags |= NSCommandKeyMask;
+    if (carbonFlags & cmdKey) cocoaFlags |= NSEventModifierFlagCommand;
     
-    if (carbonFlags & optionKey) cocoaFlags |= NSAlternateKeyMask;
+    if (carbonFlags & optionKey) cocoaFlags |= NSEventModifierFlagOption;
     
-    if (carbonFlags & controlKey) cocoaFlags |= NSControlKeyMask;
+    if (carbonFlags & controlKey) cocoaFlags |= NSEventModifierFlagControl;
     
-    if (carbonFlags & shiftKey) cocoaFlags |= NSShiftKeyMask;
+    if (carbonFlags & shiftKey) cocoaFlags |= NSEventModifierFlagShift;
     
-    if (carbonFlags & NSFunctionKeyMask) cocoaFlags += NSFunctionKeyMask;
+    if (carbonFlags & NSEventModifierFlagFunction) cocoaFlags += NSEventModifierFlagFunction;
     
     return cocoaFlags;
 }
@@ -137,15 +137,15 @@ unsigned int SRCarbonToCocoaFlags(unsigned int carbonFlags) {
 unsigned int SRCocoaToCarbonFlags(unsigned int cocoaFlags) {
     unsigned int carbonFlags = ShortcutRecorderEmptyFlags;
     
-    if (cocoaFlags & NSCommandKeyMask) carbonFlags |= cmdKey;
+    if (cocoaFlags & NSEventModifierFlagCommand) carbonFlags |= cmdKey;
     
-    if (cocoaFlags & NSAlternateKeyMask) carbonFlags |= optionKey;
+    if (cocoaFlags & NSEventModifierFlagOption) carbonFlags |= optionKey;
     
-    if (cocoaFlags & NSControlKeyMask) carbonFlags |= controlKey;
+    if (cocoaFlags & NSEventModifierFlagControl) carbonFlags |= controlKey;
     
-    if (cocoaFlags & NSShiftKeyMask) carbonFlags |= shiftKey;
+    if (cocoaFlags & NSEventModifierFlagShift) carbonFlags |= shiftKey;
     
-    if (cocoaFlags & NSFunctionKeyMask) carbonFlags |= NSFunctionKeyMask;
+    if (cocoaFlags & NSEventModifierFlagFunction) carbonFlags |= NSEventModifierFlagFunction;
     
     return carbonFlags;
 }
@@ -172,7 +172,7 @@ NSString * SRCharacterForKeyCodeAndCocoaFlags(signed short keyCode, unsigned int
     SInt32 keyLayoutKind;
     KeyboardLayoutRef currentLayout;
     UInt32 keyTranslateState;
-    UInt32 deadKeyState;
+//    UInt32 deadKeyState;
     OSStatus err = noErr;
     CFLocaleRef locale = CFLocaleCopyCurrent();
     
@@ -202,9 +202,9 @@ NSString * SRCharacterForKeyCodeAndCocoaFlags(signed short keyCode, unsigned int
         UInt16 keyc = (UInt16)keyCode;
         keyc |= (1 << 7);
         
-        if (cocoaFlags & NSAlternateKeyMask) keyc |= optionKey;
+        if (cocoaFlags & NSEventModifierFlagOption) keyc |= optionKey;
         
-        if (cocoaFlags & NSShiftKeyMask) keyc |= shiftKey;
+        if (cocoaFlags & NSEventModifierFlagShift) keyc |= shiftKey;
         
         UInt32 charCode = KeyTranslate(KCHRData, keyc, &keyTranslateState);
         
@@ -239,15 +239,15 @@ NSString * SRCharacterForKeyCodeAndCocoaFlags(signed short keyCode, unsigned int
         
         if (temp) CFRelease(temp);
     } else {
-        EventModifiers modifiers = 0;
-        
-        if (cocoaFlags & NSAlternateKeyMask) modifiers |= optionKey;
-        
-        if (cocoaFlags & NSShiftKeyMask) modifiers |= shiftKey;
-        
-        UniCharCount maxStringLength = 4, actualStringLength;
+//        EventModifiers modifiers = 0;
+		
+//        if (cocoaFlags & NSEventModifierFlagOption) modifiers |= optionKey;
+		
+//        if (cocoaFlags & NSEventModifierFlagShift) modifiers |= shiftKey;
+		
+//        UniCharCount maxStringLength = 4, actualStringLength;
         UniChar unicodeString[4];
-        err = UCKeyTranslate(uchrData, (UInt16)keyCode, kUCKeyActionDisplay, modifiers, LMGetKbdType(), kUCKeyTranslateNoDeadKeysBit, &deadKeyState, maxStringLength, &actualStringLength, unicodeString);
+//        err = UCKeyTranslate(uchrData, (UInt16)keyCode, kUCKeyActionDisplay, modifiers, LMGetKbdType(), kUCKeyTranslateNoDeadKeysBit, &deadKeyState, maxStringLength, &actualStringLength, unicodeString);
         CFStringRef temp = CFStringCreateWithCharacters(kCFAllocatorDefault, unicodeString, 1);
         resultString = CFStringCreateMutableCopy(kCFAllocatorDefault, 0, temp);
         
@@ -325,7 +325,7 @@ double SRAnimationEaseInOut(double t) {
 {
     NSString *reason = [error localizedRecoverySuggestion];
     reason = reason ? reason : @"";
-    NSAlert *alert = [[NSAlert alloc] init];
+    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
     [alert setMessageText:[error localizedDescription]];
     [alert setInformativeText:[NSString stringWithFormat:@"%@", reason]];
     [alert addButtonWithTitle:[[error localizedRecoveryOptions] objectAtIndex:0]];
@@ -421,7 +421,7 @@ static NSMutableDictionary *SRSharedImageCache = nil;
     double hScale = (size.width / 1.0);
     double vScale = (size.height / 1.0);
     
-    NSBezierPath *bp = [[NSBezierPath alloc] init];
+    NSBezierPath *bp = [[[NSBezierPath alloc] init] autorelease];
     [bp setLineWidth:hScale];
     
     [bp moveToPoint:MakeRelativePoint(0.0489685, 0.6181513)];
@@ -433,14 +433,14 @@ static NSMutableDictionary *SRSharedImageCache = nil;
     [bp curveToPoint:MakeRelativePoint(0.4085750, 0.5154130) controlPoint1:MakeRelativePoint(0.7383412, 0.4930328) controlPoint2:MakeRelativePoint(0.4085750, 0.5154130)];
     [bp lineToPoint:MakeRelativePoint(0.4085750, 0.2654000)];
     
-    NSAffineTransform *flip = [[NSAffineTransform alloc] init];
+    NSAffineTransform *flip = [[[NSAffineTransform alloc] init] autorelease];
     //	[flip translateXBy:0.95 yBy:-1.0];
     [flip scaleXBy:0.9 yBy:1.0];
     [flip translateXBy:0.5 yBy:-0.5];
     
     [bp transformUsingAffineTransform:flip];
     
-    NSShadow *sh = [[NSShadow alloc] init];
+    NSShadow *sh = [[[NSShadow alloc] init] autorelease];
     [sh setShadowColor:[[NSColor blackColor] colorWithAlphaComponent:0.45]];
     [sh setShadowBlurRadius:1.0];
     [sh setShadowOffset:NSMakeSize(0.0, -1.0)];
@@ -475,7 +475,7 @@ static NSMutableDictionary *SRSharedImageCache = nil;
     
     [[NSColor whiteColor] setStroke];
     
-    NSBezierPath *cross = [[NSBezierPath alloc] init];
+    NSBezierPath *cross = [[[NSBezierPath alloc] init] autorelease];
     [cross setLineWidth:hScale * 1.2];
     
     [cross moveToPoint:MakeRelativePoint(4, 4)];

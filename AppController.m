@@ -27,7 +27,7 @@
     if (![[NSUserDefaults standardUserDefaults] floatForKey:@"lastRun"] || [[NSUserDefaults standardUserDefaults] floatForKey:@"lastRun"] < 0.6) {
         // A decent starting value for the main hotkey is control-option-V
         [mainRecorder setKeyCombo:SRMakeKeyCombo(9, 786432)];
-
+        
         // Something we'd really like is to transfer over info from 0.5x if we can get at it --
         if ([[NSUserDefaults standardUserDefaults] persistentDomainForName:@"Jumpcut"]) {
             // We need to pull out the relevant objects and stuff them in as proper preferences for the net.sf.Jumpcut domain
@@ -35,7 +35,7 @@
                 [[NSUserDefaults standardUserDefaults] setValue:[ [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"Jumpcut"] objectForKey:@"displayNum"]
                                                          forKey:@"displayNum"];
             }
-
+            
             if ([[[NSUserDefaults standardUserDefaults] persistentDomainForName:@"Jumpcut"] objectForKey:@"savePreference"] != nil) {
                 if ([[[[NSUserDefaults standardUserDefaults] persistentDomainForName:@"Jumpcut"] objectForKey:@"savePreference"] isEqual:@"onChange"]) {
                     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:2]
@@ -50,7 +50,7 @@
             }     // End savePreference test
         }         // End if/then that deals with 0.5x preferences
     }     // End new-to-version check
-
+    
     // If we don't have preferences defined, let's set some default values:
     [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
                                                              [NSNumber numberWithInt:15],
@@ -75,7 +75,7 @@
                                                              [NSNumber numberWithBool:YES],
                                                              @"menuSelectionPastes",
                                                              nil]
-    ];
+     ];
     return [super init];
 }
 
@@ -85,10 +85,10 @@
         // A decent starting value for the main hotkey is control-option-V
         [mainRecorder setKeyCombo:SRMakeKeyCombo(9, 786432)];
         NSLog(@"Setting hotkey");
-
+        
         if ([[NSUserDefaults standardUserDefaults] persistentDomainForName:@"Jumpcut"]) {
             NSLog(@"Pulling old preference");
-
+            
             // We need to pull out the relevant objects and stuff them in as proper preferences for the net.sf.Jumpcut domain
             if ([[[NSUserDefaults standardUserDefaults] persistentDomainForName:@"Jumpcut"] objectForKey:@"hotkeyModifiers"] != nil) {
                 NSLog(@"Setting hotkey");
@@ -96,14 +96,14 @@
             }
         }
     }
-
+    
     // We no longer get autosave from ShortcutRecorder, so let's set the recorder by hand
     if ([[NSUserDefaults standardUserDefaults] dictionaryForKey:@"ShortcutRecorder mainHotkey"]) {
         [mainRecorder setKeyCombo:SRMakeKeyCombo([[[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"ShortcutRecorder mainHotkey"] objectForKey:@"keyCode"] intValue],
                                                  [[[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"ShortcutRecorder mainHotkey"] objectForKey:@"modifierFlags"] intValue])
-        ];
+         ];
     }
-
+    
     // Initialize the JumpcutStore
     clippingStore = [[JumpcutStore alloc] initRemembering:[[NSUserDefaults standardUserDefaults] integerForKey:@"rememberNum"]
                                                displaying:[[NSUserDefaults standardUserDefaults] integerForKey:@"displayNum"]
@@ -112,25 +112,25 @@
     NSSize windowSize = NSMakeSize(325.0, 175.0);
     NSSize screenSize = [[NSScreen mainScreen] frame].size;
     NSRect windowFrame = NSMakeRect( (screenSize.width - windowSize.width) / 2,
-                                     (screenSize.height - windowSize.height) / 3,
-                                     windowSize.width, windowSize.height);
+                                    (screenSize.height - windowSize.height) / 3,
+                                    windowSize.width, windowSize.height);
     bezel = [[BezelWindow alloc] initWithContentRect:windowFrame
-                                           styleMask:NSBorderlessWindowMask
+                                           styleMask:NSWindowStyleMaskBorderless
                                              backing:NSBackingStoreBuffered
                                                defer:NO];
     [bezel setDelegate:self];
     [bezel setDelegate:self];
-
+    
     // Create our pasteboard interface
     jcPasteboard = [NSPasteboard generalPasteboard];
     [jcPasteboard declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
     pbCount = [[NSNumber numberWithInt:[jcPasteboard changeCount]] retain];
-
+    
     // Build the statusbar menu
     statusItem = [[[NSStatusBar systemStatusBar]
                    statusItemWithLength:NSVariableStatusItemLength] retain];
     [statusItem setHighlightMode:YES];
-
+    
     if ([[NSUserDefaults standardUserDefaults] integerForKey:@"menuIcon"] == 1) {
         [statusItem setTitle:[NSString stringWithFormat:@"%C", 0x2704]];
     } else if ([[NSUserDefaults standardUserDefaults] integerForKey:@"menuIcon"] == 2) {
@@ -140,35 +140,35 @@
         [image setTemplate:YES];
         [statusItem setImage:image];
     }
-
+    
     [statusItem setMenu:jcMenu];
     [statusItem setEnabled:YES];
-
+    
     // If our preferences indicate that we are saving, load the dictionary from the saved plist
     // and use it to get everything set up.
     if ([[NSUserDefaults standardUserDefaults] integerForKey:@"savePreference"] >= 1) {
         [self loadEngineFromPList];
     }
-
+    
     // Build our listener timer
     pollPBTimer = [[NSTimer scheduledTimerWithTimeInterval:(1.0)
                                                     target:self
                                                   selector:@selector(pollPB:)
                                                   userInfo:nil
                                                    repeats:YES] retain];
-
+    
     // Finish up
     srTransformer = [[[SRKeyCodeTransformer alloc] init] retain];
     pbBlockCount = [[NSNumber numberWithInt:0] retain];
     [pollPBTimer fire];
-
+    
     // Stack position starts @ 0 by default
     stackPosition = 0;
-
+    
     // Make sure we only run the 0.5x transition once
     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithFloat:0.6]
                                              forKey:@"lastRun"];
-
+    
     [NSApp activateIgnoringOtherApps:YES];
 }
 
@@ -201,7 +201,7 @@
 - (IBAction)setRememberNumPref:(id)sender {
     int choice;
     int newRemember = [sender intValue];
-
+    
     if (newRemember < [clippingStore jcListCount] &&
         !issuedRememberResizeWarning &&
         ![[NSUserDefaults standardUserDefaults] boolForKey:@"stifleRememberResizeWarning"]
@@ -209,7 +209,7 @@
         choice = NSRunAlertPanel(@"Resize Stack",
                                  @"Resizing the stack to a value below its present size will cause clippings to be lost.",
                                  @"Resize", @"Cancel", @"Don't Warn Me Again");
-
+        
         if (choice == NSAlertAlternateReturn) {
             [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:[clippingStore jcListCount]]
                                                      forKey:@"rememberNum"];
@@ -222,12 +222,12 @@
             issuedRememberResizeWarning = YES;
         }
     }
-
+    
     if (newRemember < [[NSUserDefaults standardUserDefaults] integerForKey:@"displayNum"]) {
         [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:newRemember]
                                                  forKey:@"displayNum"];
     }
-
+    
     [clippingStore setRememberNum:newRemember];
     [self updateMenu];
 }
@@ -238,7 +238,7 @@
 
 - (IBAction)showPreferencePanel:(id)sender {
     int checkLoginRegistry = [UKLoginItemRegistry indexForLoginItemWithPath:[[NSBundle mainBundle] bundlePath]];
-
+    
     if (checkLoginRegistry >= 1) {
         [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES]
                                                  forKey:@"loadOnStartup"];
@@ -246,9 +246,9 @@
         [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO]
                                                  forKey:@"loadOnStartup"];
     }
-
+    
     if ([prefsPanel respondsToSelector:@selector(setCollectionBehavior:)]) [prefsPanel setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
-
+    
     [NSApp activateIgnoringOtherApps:YES];
     [prefsPanel makeKeyAndOrderFront:self];
     issuedRememberResizeWarning = NO;
@@ -280,7 +280,7 @@
 
 - (void)fakeCommandV
 /*" +fakeCommandV synthesizes keyboard events for Cmd-v Paste
-   shortcut. "*/
+ shortcut. "*/
 // Code from a Mark Mason post to Cocoadev-l
 // What are the flaws in this approach?
 //  We don't know whether we can really accept the paste
@@ -294,7 +294,7 @@
 {
     NSNumber *keyCode = [srTransformer reverseTransformedValue:@"V"];
     CGKeyCode veeCode = (CGKeyCode)[keyCode intValue];
-
+    
     CGPostKeyboardEvent( (CGCharCode)0, (CGKeyCode)55, true);      // Command down
     CGPostKeyboardEvent( (CGCharCode)'v', veeCode, true);      // V down
     CGPostKeyboardEvent( (CGCharCode)'v', veeCode, false);      //  V up
@@ -303,16 +303,16 @@
 
 - (void)pollPB:(NSTimer *)timer {
     NSString *type = [jcPasteboard availableTypeFromArray:[NSArray arrayWithObject:NSStringPboardType]];
-
+    
     if ([pbCount intValue] != [jcPasteboard changeCount]) {
         // Reload pbCount with the current changeCount
         // Probably poor coding technique, but pollPB should be the only thing messing with pbCount, so it should be okay
         [pbCount release];
         pbCount = [[NSNumber numberWithInt:[jcPasteboard changeCount]] retain];
-
+        
         if (type != nil) {
             NSString *contents = [jcPasteboard stringForType:type];
-
+            
             if (contents == nil) {
                 //                NSLog(@"Contents: Empty");
             } else {
@@ -324,7 +324,7 @@
                     //					if ( [clippingStore jcListCount] > 1 ) stackPosition++;
                     stackPosition = 0;
                     [self updateMenu];
-
+                    
                     if ([[NSUserDefaults standardUserDefaults] integerForKey:@"savePreference"] >= 2) {
                         [self saveEngine];
                     }
@@ -338,92 +338,92 @@
 
 - (void)processBezelKeyDown:(NSEvent *)theEvent {
     int newStackPosition;
-
+    
     // AppControl should only be getting these directly from bezel via delegation
-    if ([theEvent type] == NSKeyDown) {
+    if ([theEvent type] == NSEventTypeKeyDown) {
         if ([theEvent keyCode] == [mainRecorder keyCombo].code) {
-            if ([theEvent modifierFlags] & NSShiftKeyMask) {
+            if ([theEvent modifierFlags] & NSEventModifierFlagShift) {
                 [self stackUp];
             } else {
                 [self stackDown];
             }
-
+            
             return;
         }
-
+        
         unichar pressed = [[theEvent charactersIgnoringModifiers] characterAtIndex:0];
         switch (pressed) {
             case 0x1B:
                 [self hideApp];
                 break;
-
+                
             case 0x3:
             case 0xD:                       // Enter or Return
                 [self pasteFromStack];
                 break;
-
+                
             case NSUpArrowFunctionKey:
             case NSLeftArrowFunctionKey:
                 [self stackUp];
                 break;
-
+                
             case NSDownArrowFunctionKey:
             case NSRightArrowFunctionKey:
                 [self stackDown];
                 break;
-
+                
             case NSHomeFunctionKey:
-
+                
                 if ([clippingStore jcListCount] > 0) {
                     stackPosition = 0;
                     [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
                     [bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
                 }
-
+                
                 break;
-
+                
             case NSEndFunctionKey:
-
+                
                 if ([clippingStore jcListCount] > 0) {
                     stackPosition = [clippingStore jcListCount] - 1;
                     [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
                     [bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
                 }
-
+                
                 break;
-
+                
             case NSPageUpFunctionKey:
-
+                
                 if ([clippingStore jcListCount] > 0) {
                     stackPosition = stackPosition - 10;
-
+                    
                     if (stackPosition < 0) stackPosition = 0;
-
+                    
                     [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
                     [bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
                 }
-
+                
                 break;
-
+                
             case NSPageDownFunctionKey:
-
+                
                 if ([clippingStore jcListCount] > 0) {
                     stackPosition = stackPosition + 10;
-
+                    
                     if (stackPosition >= [clippingStore jcListCount]) stackPosition = [clippingStore jcListCount] - 1;
-
+                    
                     [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
                     [bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
                 }
-
+                
                 break;
-
+                
             case NSBackspaceCharacter: break;
-
+                
             case NSDeleteCharacter: break;
-
+                
             case NSDeleteFunctionKey: break;
-
+                
             case 0x30:
             case 0x31:
             case 0x32:
@@ -437,15 +437,15 @@
                 // We'll currently ignore the possibility that the user wants to do something with shift.
                 // First, let's set the new stack count to "10" if the user pressed "0"
                 newStackPosition = pressed == 0x30 ? 9 : [[NSString stringWithCharacters:&pressed length:1] intValue] - 1;
-
+                
                 if ([clippingStore jcListCount] >= newStackPosition) {
                     stackPosition = newStackPosition;
                     [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
                     [bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
                 }
-
+                
                 break;
-
+                
             default: // It's not a navigation/application-defined thing, so let's figure out what to do with it.
                 NSLog(@"PRESSED %d", pressed);
                 NSLog(@"CODE %d", [mainRecorder keyCombo].code);
@@ -464,9 +464,9 @@
         [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
         [bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
     }
-
+    
     if ([bezel respondsToSelector:@selector(setCollectionBehavior:)]) [bezel setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
-
+    
     [bezel makeKeyAndOrderFront:nil];
     isBezelDisplayed = YES;
 }
@@ -492,11 +492,11 @@
 - (void)hitMainHotKey:(PTHotKey *)hotKey {
     if (!isBezelDisplayed) {
         [NSApp activateIgnoringOtherApps:YES];
-
+        
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"stickyBezel"]) {
             isBezelPinned = YES;
         }
-
+        
         [self showBezel];
     } else {
         [self stackDown];
@@ -509,7 +509,7 @@
         [mainHotKey release];
         mainHotKey = nil;
     }
-
+    
     mainHotKey = [[PTHotKey alloc] initWithIdentifier:@"mainHotKey"
                                              keyCombo:[PTKeyCombo keyComboWithKeyCode:[mainRecorder keyCombo].code
                                                                             modifiers:[mainRecorder cocoaToCarbonFlags:[mainRecorder keyCombo].flags]]];
@@ -521,21 +521,21 @@
 
 - (IBAction)clearClippingList:(id)sender {
     int choice;
-
+    
     [NSApp activateIgnoringOtherApps:YES];
     choice = NSRunAlertPanel(@"Clear Clipping List",
                              @"Do you want to clear all recent clippings?",
                              @"Clear", @"Cancel", nil);
-
+    
     // on clear, zap the list and redraw the menu
     if (choice == NSAlertDefaultReturn) {
         [clippingStore clearList];
         [self updateMenu];
-
+        
         if ([[NSUserDefaults standardUserDefaults] integerForKey:@"savePreference"] >= 1) {
             [self saveEngine];
         }
-
+        
         [bezel setText:@""];
     }
 }
@@ -548,7 +548,7 @@
     NSArray *returnedDisplayStrings = [clippingStore previousDisplayStrings:[[NSUserDefaults standardUserDefaults] integerForKey:@"displayNum"]];
     NSEnumerator *menuEnumerator = [[jcMenu itemArray] reverseObjectEnumerator];
     NSEnumerator *clipEnumerator = [returnedDisplayStrings reverseObjectEnumerator];
-
+    
     //remove clippings from menu
     while (oldItem = [menuEnumerator nextObject]) {
         if ([oldItem isSeparatorItem]) {
@@ -557,7 +557,7 @@
             [jcMenu removeItem:oldItem];
         }
     }
-
+    
     while (pbMenuTitle = [clipEnumerator nextObject]) {
         item = [[NSMenuItem alloc] initWithTitle:pbMenuTitle
                                           action:@selector(processMenuClippingSelection:)
@@ -572,9 +572,9 @@
 
 - (IBAction)processMenuClippingSelection:(id)sender {
     int index = [[sender menu] indexOfItem:sender];
-
+    
     [self addClipToPasteboardFromCount:index];
-
+    
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"menuSelectionPastes"]) {
         [self performSelector:@selector(hideApp) withObject:nil];
         [self performSelector:@selector(fakeCommandV) withObject:nil afterDelay:0.2];
@@ -603,19 +603,19 @@
 - (BOOL)addClipToPasteboardFromCount:(int)indexInt {
     NSString *pbFullText;
     NSArray *pbTypes;
-
+    
     if ( (indexInt + 1) > [clippingStore jcListCount]) {
         // We're asking for a clipping that isn't there yet
         // This only tends to happen immediately on startup when not saving, as the entire list is empty.
         NSLog(@"Out of bounds request to jcList ignored.");
         return false;
     }
-
+    
     pbFullText = [self clippingStringWithCount:indexInt];
     pbTypes = [NSArray arrayWithObjects:@"NSStringPboardType", NULL];
-
+    
     [jcPasteboard declareTypes:pbTypes owner:NULL];
-
+    
     [jcPasteboard setString:pbFullText forType:@"NSStringPboardType"];
     [self setPBBlockCount:[NSNumber numberWithInt:[jcPasteboard changeCount]]];
     return true;
@@ -629,23 +629,23 @@
     NSArray *savedJCList;
     NSRange loadRange;
     int rangeCap;
-
+    
     if (loadDict != nil) {
         savedJCList = [loadDict objectForKey:@"jcList"];
-
+        
         if ([savedJCList isKindOfClass:[NSArray class]]) {
             // There's probably a nicer way to prevent the range from going out of bounds, but this works.
             rangeCap = [savedJCList count] < [[NSUserDefaults standardUserDefaults] integerForKey:@"rememberNum"] ? [savedJCList count] : [[NSUserDefaults standardUserDefaults] integerForKey:@"rememberNum"];
             loadRange = NSMakeRange(0, rangeCap);
             enumerator = [[savedJCList subarrayWithRange:loadRange] reverseObjectEnumerator];
-
+            
             while (aSavedClipping = [enumerator nextObject])
                 [clippingStore addClipping:[aSavedClipping objectForKey:@"Contents"]
                                     ofType:[aSavedClipping objectForKey:@"Type"]];
         } else {
             NSLog(@"Not array");
         }
-
+        
         [self updateMenu];
         [loadDict release];
     }
@@ -653,7 +653,7 @@
 
 - (void)stackDown {
     stackPosition++;
-
+    
     if ([clippingStore jcListCount] > stackPosition) {
         [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
         [bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
@@ -670,7 +670,7 @@
 
 - (void)stackUp {
     stackPosition--;
-
+    
     if (stackPosition < 0) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"wraparoundBezel"]) {
             stackPosition = [clippingStore jcListCount] - 1;
@@ -680,7 +680,7 @@
             stackPosition = 0;
         }
     }
-
+    
     if ([clippingStore jcListCount] > stackPosition) {
         [bezel setStackString:[NSString stringWithFormat:@"%d/%d", stackPosition + 1, clippingStore.jcListCount]];
         [bezel setText:[clippingStore clippingContentsAtPosition:stackPosition]];
@@ -693,9 +693,9 @@
     int i;
     BOOL isDir;
     NSString *path;
-
+    
     path = [@"~/Library/Application Support/Jumpcut" stringByExpandingTildeInPath];
-
+    
     if (![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] || !isDir) {
         NSLog(@"Creating Application Support directory");
         [[NSFileManager defaultManager] createDirectoryAtPath:path
@@ -706,9 +706,9 @@
                                                                @"NSFilePosixPermissions", [NSNull null],
                                                                @"NSFileExtensionsHidden", [NSNull null],
                                                                nil]
-        ];
+         ];
     }
-
+    
     saveDict = [NSMutableDictionary dictionaryWithCapacity:3];
     [saveDict setObject:@"0.6" forKey:@"version"];
     [saveDict setObject:[NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"rememberNum"]]
@@ -717,19 +717,19 @@
                  forKey:@"displayLen"];
     [saveDict setObject:[NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"displayNum"]]
                  forKey:@"displayNum"];
-
+    
     for (i = 0; i < [clippingStore jcListCount]; i++) {
         [jcListArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:
                                 [clippingStore clippingContentsAtPosition:i], @"Contents",
                                 [clippingStore clippingTypeAtPosition:i], @"Type",
                                 [NSNumber numberWithInt:i], @"Position",
                                 nil
-         ]
-        ];
+                                ]
+         ];
     }
-
+    
     [saveDict setObject:jcListArray forKey:@"jcList"];
-
+    
     if ([saveDict writeToFile:[path stringByAppendingString:@"/JCEngine.save"] atomically:true]) {
         // NSLog(@"Engine contents saved.");
     } else {
@@ -750,15 +750,15 @@
     if (aRecorder == mainRecorder) {
         BOOL isTaken = NO;
         /*
-           KeyCombo kc = [delegateDisallowRecorder keyCombo];
-
-           if (kc.code == keyCode && kc.flags == flags) isTaken = YES;
-
+         KeyCombo kc = [delegateDisallowRecorder keyCombo];
+         
+         if (kc.code == keyCode && kc.flags == flags) isTaken = YES;
+         
          * aReason = [delegateDisallowReasonField stringValue];
          */
         return isTaken;
     }
-
+    
     return NO;
 }
 
@@ -774,7 +774,7 @@
         NSLog(@"Saving on exit");
         [self saveEngine];
     }
-
+    
     //Unregister our hot key (not required)
     [[PTHotKeyCenter sharedCenter] unregisterHotKey:mainHotKey];
     [mainHotKey release];
@@ -782,12 +782,12 @@
     [self hideBezel];
     [[NSDistributedNotificationCenter defaultCenter]
      removeObserver:self
-               name:@"AppleKeyboardPreferencesChangedNotification"
-             object:nil];
+     name:@"AppleKeyboardPreferencesChangedNotification"
+     object:nil];
     [[NSDistributedNotificationCenter defaultCenter]
      removeObserver:self
-               name:@"AppleSelectedInputSourcesChangedNotification"
-             object:nil];
+     name:@"AppleSelectedInputSourcesChangedNotification"
+     object:nil];
 }
 
 - (void)dealloc {

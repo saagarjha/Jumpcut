@@ -18,7 +18,7 @@
 
 + (id)keyComboWithKeyCode: (NSInteger)keyCode modifiers: (NSUInteger)modifiers
 {
-	return [[self alloc] initWithKeyCode: keyCode modifiers: modifiers];
+	return [[[self alloc] initWithKeyCode: keyCode modifiers: modifiers] autorelease];
 }
 
 - (id)initWithKeyCode: (NSInteger)keyCode modifiers: (NSUInteger)modifiers
@@ -49,7 +49,7 @@
             case kVK_F18:
             case kVK_F19:
             case kVK_F20:
-                mModifiers = modifiers | NSFunctionKeyMask;
+                mModifiers = modifiers | NSEventModifierFlagFunction;
                 break;
             default:
                 mModifiers = modifiers;

@@ -160,24 +160,24 @@ static NSArray *padKeysArray        = nil;
 
         return (isPadKey ? [NSString stringWithFormat:SRLoc(@"Pad %@"), keyString] : keyString);
     } else { // kKLuchrKind, kKLKCHRuchrKind
-        UCKeyboardLayout *keyboardLayout = NULL;
-        err = KLGetKeyboardLayoutProperty(currentLayoutRef, kKLuchrData, (const void **)&keyboardLayout);
+//        UCKeyboardLayout *keyboardLayout = NULL;
+//        err = KLGetKeyboardLayoutProperty(currentLayoutRef, kKLuchrData, (const void **)&keyboardLayout);
 
         if (err != noErr) return nil;
 
-        UniCharCount length = 4, realLength;
+//        UniCharCount length = 4, realLength;
         UniChar chars[4];
 
-        err = UCKeyTranslate(keyboardLayout,
-                             keyCode,
-                             kUCKeyActionDisplay,
-                             0,
-                             LMGetKbdType(),
-                             kUCKeyTranslateNoDeadKeysBit,
-                             &keysDown,
-                             length,
-                             &realLength,
-                             chars);
+//        err = UCKeyTranslate(keyboardLayout,
+//                             keyCode,
+//                             kUCKeyActionDisplay,
+//                             0,
+//                             LMGetKbdType(),
+//                             kUCKeyTranslateNoDeadKeysBit,
+//                             &keysDown,
+//                             length,
+//                             &realLength,
+//                             chars);
 
         NSString *keyString = [[NSString stringWithCharacters:chars length:1] uppercaseString];
 

@@ -43,8 +43,8 @@
 
 - (void)dealloc
 {
-    [super dealloc];
 	CFRelease(keyboardLayout);
+	[super dealloc];
 
 }
 
