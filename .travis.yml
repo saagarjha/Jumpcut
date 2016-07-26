@@ -1,8 +1,4 @@
 language: objective-c
 osx_image: xcode8
 
-before_install:
-  - brew update
-  - brew outdated xctool || (brew uninstall xctool && brew upgrade xctool)
-
-script: xctool -project Jumpcut.xcodeproj -scheme Jumpcut build -sdk macosx10.12
+script: xcodebuild -project Jumpcut.xcodeproj -scheme Jumpcut build -sdk macosx10.12
