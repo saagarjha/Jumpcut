@@ -1,6 +1,6 @@
 # Jumpcut<a href="https://travis-ci.org/saagarjha/Jumpcut">![](https://travis-ci.org/saagarjha/Jumpcut.svg?branch=master)</a>
-A clipboard buffer for OS X, originally written by snarkout and fixed to compile on OS X 10.11.
+A clipboard buffer for OS X, originally written by snarkout and fixed to compile on macOS 10.12.
 
-For more detail, please see the [original project page](http://jumpcut.sourceforge.net).
+For more details, please see the [original project page](http://jumpcut.sourceforge.net).
 
 Licensed under the MIT license.
